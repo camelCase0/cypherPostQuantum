@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: exe-files-linux
-          path: dist/main.exe # Assuming 'dist' is the default directory pyinstaller creates the exe in
+          path: dist/main # Assuming 'dist' is the default directory pyinstaller creates the exe in
 
   # Repeat the build job for Windows and macOS if needed
   build-windows:
@@ -63,7 +63,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: exe-files-windows
-          path: dist/main.exe
+          path: dist/main
 
   build-macos:
     runs-on: macos-latest
@@ -90,7 +90,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: exe-files-macos
-          path: dist/main.exe
+          path: dist/main
 
   create-release:
     runs-on: ubuntu-latest
