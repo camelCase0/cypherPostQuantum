@@ -23,12 +23,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          python3.8 -m pip install --upgrade pip
         #   pip install -r requirements.txt  # Adjust as per your project setup
 
       - name: Build executable
         run: |
-          python -m pip install pyinstaller
+          python3.8 -m pip install pyinstaller
           pyinstaller --onefile --windowed main.py  # Replace with your main script name
 
       - name: Upload artifact
@@ -51,12 +51,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          python3.8 -m pip install --upgrade pip
         #   pip install -r requirements.txt
 
       - name: Build executable
         run: |
-          python -m pip install pyinstaller
+          python3.8 -m pip install pyinstaller
           pyinstaller --onefile --windowed main.py
 
       - name: Upload artifact
@@ -78,12 +78,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          python3.8 -m pip install --upgrade pip
         #   pip install -r requirements.txt
 
       - name: Build executable
         run: |
-          python -m pip install pyinstaller
+          python3.8 -m pip install pyinstaller
           pyinstaller --onefile --windowed main.py
 
       - name: Upload artifact
