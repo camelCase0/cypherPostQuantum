@@ -107,9 +107,9 @@ jobs:
         with:
           name: |
             exe-files-linux
-            exe-files-macos
-            exe-files-windows
-          path: dist # Assuming 'dist' is where your executable was uploaded in build_exe job
+            # exe-files-macos
+            # exe-files-windows
+          path: dist 
 
       - name: Create Release
         id: create_release
