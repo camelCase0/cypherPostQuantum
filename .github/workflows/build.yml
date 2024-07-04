@@ -9,7 +9,7 @@ on:
       - master # Adjust branch as needed
 
 jobs:
-  build:
+  build-linux:
     runs-on: ubuntu-latest # Use ubuntu-latest for cross-platform compatibility
 
     steps:
@@ -84,7 +84,7 @@ jobs:
       - name: Build executable
         run: |
           python -m pip install pyinstaller
-          pyinstaller --onefile --windowed your_script.py
+          pyinstaller --onefile --windowed main.py
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
