@@ -129,11 +129,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.0.0 # Replace with your desired tag version
-          release_name: Release v1.0.0 # Replace with your desired release name
+          tag_name: v1.0.1 # Replace with your desired tag version
+          release_name: Release v1.0.1 # Replace with your desired release name
           body: |
-            Release notes for version 1.0.0
-            - Added executables for Windows, macOS, and Linux
+            Release notes for version 1.0.1
+            - Fixing executables for Windows, macOS, and Linux
           draft: false
           prerelease: false
 
