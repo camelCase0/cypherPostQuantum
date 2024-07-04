@@ -37,21 +37,6 @@ jobs:
           name: exe-files
           path: dist # Assuming 'dist' is the default directory pyinstaller creates the exe in
 
-      - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v1.0.0 # Replace with your desired tag version
-          release_name: Release v1.0.0 # Replace with your desired release name
-          body: |
-            Release notes for version 1.0.0
-            - Added executable files for Windows, macOS, and Linux
-          draft: false
-          prerelease: false
-          files: dist/*.exe # Upload the .exe files as release assets
-
   # Repeat the build job for Windows and macOS if needed
   build-windows:
     runs-on: windows-latest
