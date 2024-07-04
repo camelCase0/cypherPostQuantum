@@ -51,7 +51,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python3.8 -m pip install --upgrade pip
+          python -m pip install --upgrade pip
         #   pip install -r requirements.txt
 
       - name: Build executable
@@ -127,6 +127,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/*.exe
+          asset_path: dist/*
           asset_name: CryptoCalculator.exe
           asset_content_type: application/octet-stream
