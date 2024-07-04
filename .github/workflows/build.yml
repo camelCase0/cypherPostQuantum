@@ -105,7 +105,6 @@ jobs:
         with:
           name: |
             exe-files-linux
-          path: dist 
 
       - name: Create Release
         id: create_release
