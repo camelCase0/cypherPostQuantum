@@ -1,8 +1,24 @@
-E(m) = (r,m)G<sub>a,b</sub>&oplus;ε
+# Task to solve matrix 
+## Base formula
+### E(m) = (r,m)G<sub>a,b</sub>&oplus;ε
 
-f(x)= $x^2$ + x + 1, F<sub>2</sub>($2^2$)
+<code>(r,m)</code> - **Open text** 📜
 
-x y 0:0
+<code>G<sub>a,b</sub> </code>- **Closed key** 🔑
+
+## Input
+> Table1 size **(r,m)**
+
+> Table2 size **G<sub>a,b</sub>**
+
+> Table1
+
+> Table2 
+
+> f(x) = $x^3+x+1$
+## Example calculation
+
+![alt text](image.png)
 
 
 
