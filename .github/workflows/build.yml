@@ -32,7 +32,7 @@ jobs:
           pyinstaller --onefile --windowed main.py  # Replace with your main script name
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: exe-files-linux
           path: dist/main.exe # Assuming 'dist' is the default directory pyinstaller creates the exe in
@@ -60,7 +60,7 @@ jobs:
           pyinstaller --onefile --windowed main.py
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: exe-files-windows
           path: dist/main.exe
@@ -103,7 +103,7 @@ jobs:
         uses: actions/checkout@v2 # Action to checkout the repository
 
       - name: Download Executables
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v2
         with:
           name: |
             exe-files-linux
@@ -127,7 +127,7 @@ jobs:
 
       - name: Upload Release Asset
         id: upload-release-asset
-        uses: actions/upload-release-asset@v4
+        uses: actions/upload-release-asset@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
