@@ -18,6 +18,9 @@ jobs:
       - name: Install requirements
         run: |
           pip install pyinstaller
+      - name: Build SPEC
+        run: |
+          python -m PyInstaller --onefile main.py
       - name: Run PyInstaller
         run: |
           python -m PyInstaller main.spec
