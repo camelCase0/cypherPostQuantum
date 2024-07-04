@@ -1,47 +1,93 @@
-name: Build Workflow
+name: Build Executable
 
 on:
   push:
-#    branches: master
+    branches:
+      - master # Adjust branch as needed
+  pull_request:
+    branches:
+      - master # Adjust branch as needed
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest # Use ubuntu-latest for cross-platform compatibility
 
     steps:
-      - name: Check-out repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          python-version: "3.10" # Version range or exact version of a Python version to use, using SemVer's version range syntax
-          architecture: "x64" # optional x64 or x86. Defaults to x64 if not specified
-          cache: "pip"
-          cache-dependency-path: |
-            **/requirements*.txt
+          python-version: 3.8 # Specify your Python version
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
-          pip install -r requirements-dev.txt
+          python -m pip install --upgrade pip
+        #   pip install -r requirements.txt  # Adjust as per your project setup
 
-      - name: Build Executable
-        uses: Nuitka/Nuitka-Action@main
-        with:
-          nuitka-version: main
-          script-name: kasa_cli
-          onefile: true
-          enable-plugins: tk-inter
+      - name: Build executable
+        run: |
+          python -m pip install pyinstaller
+          pyinstaller --onefile --windowed main.py  # Replace with your main script name
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
         with:
-          name: ${{ runner.os }} Build
-          path: |
-            build/*.exe
-            build/*.bin
-            build/*.app/**/*
+          name: exe-files
+          path: dist # Assuming 'dist' is the default directory pyinstaller creates the exe in
+
+  # Repeat the build job for Windows and macOS if needed
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+        #   pip install -r requirements.txt
+
+      - name: Build executable
+        run: |
+          python -m pip install pyinstaller
+          pyinstaller --onefile --windowed main.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: exe-files-windows
+          path: dist
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+        #   pip install -r requirements.txt
+
+      - name: Build executable
+        run: |
+          python -m pip install pyinstaller
+          pyinstaller --onefile --windowed your_script.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: exe-files-macos
+          path: dist
