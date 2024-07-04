@@ -5,47 +5,43 @@ on:
 #    branches: master
 
 jobs:
-  build-linux:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Install Python
-        uses: actions/setup-python@v1
-        with:
-          python-version: "3.10"
-          architecture: "x64"
-      - name: Install requirements
-        run: |
-          pip install pyinstaller
-      - name: Run PyInstaller
-        run: |
-          python -m PyInstaller main.spec
-      - uses: actions/upload-artifact@v2
-        with:
-          name: Windows_qwiklabs
-          path: dist/main.exe
+  build:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
 
-      - name: create release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Check-out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          tag_name: ${{ github.event.head_commit.message }}
-          release_name: ${{ github.event.head_commit.message }}
-          overwrite: true
-          body: |
-            Test Release v1.0.0
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          python-version: "3.10" # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: "x64" # optional x64 or x86. Defaults to x64 if not specified
+          cache: "pip"
+          cache-dependency-path: |
+            **/requirements*.txt
+
+      #   - name: Install Dependencies
+      #     run: |
+      #       pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Build Executable
+        uses: Nuitka/Nuitka-Action@main
         with:
-          upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: dist/main.exe
-          asset_name: Crypto-Matrix-Calculator.exe
-          asset_content_type: application/zip
+          nuitka-version: main
+          script-name: kasa_cli
+          onefile: true
+          enable-plugins: tk-inter
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ runner.os }} Build
+          path: |
+            build/*.exe
+            build/*.bin
+            build/*.app/**/*
