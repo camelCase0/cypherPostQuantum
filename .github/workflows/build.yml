@@ -123,9 +123,21 @@ jobs:
             exe-files-macos
           path: macos
 
+      - name: Check if release exists
+        id: check_release
+        run: |
+          TAG_NAME=$(echo "${GITHUB_REF}" | sed -e 's,refs/tags/,,')
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${TAG_NAME})
+          if [[ $RESPONSE -eq 404 ]]; then
+            echo "::set-output name=release_exists::false"
+          else
+            echo "::set-output name=release_exists::true"
+          fi
+
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        if: steps.check_release.outputs.release_exists == 'false'
+        uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
