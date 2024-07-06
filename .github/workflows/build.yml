@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-linux:
-    runs-on: ubuntu-latest # Use ubuntu-latest for cross-platform compatibility
+    runs-on: ubuntu-20.04 # Use ubuntu-latest for cross-platform compatibility
 
     steps:
       - name: Checkout code
