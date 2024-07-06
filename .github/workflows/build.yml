@@ -100,8 +100,7 @@ jobs:
 
   create-release:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/') 
-    #|| github.event_name == 'workflow_dispatch'
+    if: startsWith(github.ref, 'refs/tags/') || github.event.inputs.tag
     needs:
       - build-linux
       - build-windows
@@ -137,10 +136,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.0.1 # Replace with your desired tag version
-          release_name: Release v1.0.1 # Replace with your desired release name
+          tag_name: github.event.inputs.tag || github.ref # Replace with your desired tag version
+          release_name: Release github.event.inputs.tag || github.ref # Replace with your desired release name
           body: |
-            Release notes for version 1.0.1
+            Release notes for version ${{ github.event.inputs.tag || github.ref }}
             - Fixing executables for Windows, macOS, and Linux
           draft: false
           prerelease: false
