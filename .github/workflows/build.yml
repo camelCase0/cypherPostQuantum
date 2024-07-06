@@ -136,8 +136,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: github.event.inputs.tag || github.ref # Replace with your desired tag version
-          release_name: Release github.event.inputs.tag || github.ref # Replace with your desired release name
+          tag_name: ${{ github.event.inputs.tag || github.ref }} # Replace with your desired tag version
+          release_name: Release ${{ github.event.inputs.tag || github.ref }} # Replace with your desired release name
           body: |
             Release notes for version ${{ github.event.inputs.tag || github.ref }}
             - Fixing executables for Windows, macOS, and Linux
