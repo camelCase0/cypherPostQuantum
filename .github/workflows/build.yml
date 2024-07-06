@@ -2,6 +2,10 @@ name: Build Executable
 
 on:
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Specify a tag to trigger the workflow (optional)'
+        required: false
   push:
     tags:
       - '*'
@@ -9,7 +13,7 @@ on:
       - master # Adjust branch as needed
   pull_request:
     branches:
-      - master # Adjust branch as needed
+      - master 
 
 jobs:
   build-linux:
@@ -96,7 +100,8 @@ jobs:
 
   create-release:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+    if: startsWith(github.ref, 'refs/tags/') 
+    #|| github.event_name == 'workflow_dispatch'
     needs:
       - build-linux
       - build-windows
