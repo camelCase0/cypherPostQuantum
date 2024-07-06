@@ -1,6 +1,7 @@
 name: Build Executable
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - '*'
@@ -95,7 +96,7 @@ jobs:
 
   create-release:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
     needs:
       - build-linux
       - build-windows
