@@ -1,4 +1,4 @@
-[![Build Executable](https://github.com/camelCase0/cypherPostQuantum/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/camelCase0/cypherPostQuantum/actions/workflows/build.yml)
+[![Build Executable](https://github.com/camelCase0/cypherPostQuantum/actions/workflows/build.yml/badge.svg)](https://github.com/camelCase0/cypherPostQuantum/actions/workflows/build.yml)
 # <img src="sample.ico" width="25" height="25"/>Task to solve matrix 
 ## Base formula
 ### E(m) = (r,m)G<sub>a,b</sub>&oplus;ε
