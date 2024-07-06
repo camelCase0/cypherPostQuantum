@@ -16,20 +16,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Update
+        run: apt-get update && apt-get install -y python3 python3-pip
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: 3.8 # Specify your Python version
 
       - name: Install dependencies
-        run: |
+        run: | 
           python3.8 -m pip install --upgrade pip
-        #   pip install -r requirements.txt  # Adjust as per your project setup
+          python3.8 -m pip install pyinstaller
+  #   pip install -r requirements.txt  # Adjust as per your project setup
 
       - name: Build executable
-        run: |
-          python3.8 -m pip install pyinstaller
-          pyinstaller --onefile main.py  # Replace with your main script name
+        run: pyinstaller --onefile main.py  # Replace with your main script name
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -136,7 +138,7 @@ jobs:
 
       - name: Create Release
         id: create_release
-        if: ${{ env.release_exists }} == 'false'
+        if: ${{ env.RELEASE_EXISTS }} == 'false'
         uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
