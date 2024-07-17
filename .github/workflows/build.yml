@@ -1,35 +1,41 @@
 name: Build Executable
 
 on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Specify a tag to trigger the workflow (optional)'
+        required: false
   push:
+    tags:
+      - '*'
     branches:
       - master # Adjust branch as needed
   pull_request:
     branches:
-      - master # Adjust branch as needed
+      - master 
 
 jobs:
   build-linux:
-    runs-on: ubuntu-latest # Use ubuntu-latest for cross-platform compatibility
+    runs-on: ubuntu-20.04 # Use ubuntu-latest for cross-platform compatibility
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: 3.8 # Specify your Python version
 
       - name: Install dependencies
-        run: |
+        run: | 
           python3.8 -m pip install --upgrade pip
-        #   pip install -r requirements.txt  # Adjust as per your project setup
+          python3.8 -m pip install pyinstaller
+  #   pip install -r requirements.txt  # Adjust as per your project setup
 
       - name: Build executable
-        run: |
-          python3.8 -m pip install pyinstaller
-          pyinstaller --onefile --static main.py  # Replace with your main script name
+        run: pyinstaller --onefile main.py  # Replace with your main script name
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -42,10 +48,10 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: 3.8
 
@@ -69,10 +75,10 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: 3.8
 
@@ -94,13 +100,14 @@ jobs:
 
   create-release:
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/') || github.event.inputs.tag
     needs:
       - build-linux
       - build-windows
       - build-macos
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2 # Action to checkout the repository
+        uses: actions/checkout@v4 # Action to checkout the repository
 
       - name: Download Linux-executable
         uses: actions/download-artifact@v4
@@ -125,14 +132,14 @@ jobs:
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v1.0.1 # Replace with your desired tag version
-          release_name: Release v1.0.1 # Replace with your desired release name
+          tag_name: ${{ github.event.inputs.tag || github.ref }} # Replace with your desired tag version
+          release_name: Release ${{ github.event.inputs.tag || github.ref }} # Replace with your desired release name
           body: |
-            Release notes for version 1.0.1
+            Release notes for version ${{ github.event.inputs.tag || github.ref }}
             - Fixing executables for Windows, macOS, and Linux
           draft: false
           prerelease: false
